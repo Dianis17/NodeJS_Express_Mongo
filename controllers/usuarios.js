@@ -60,7 +60,7 @@ async function actualizaraUsuario(email, body){
 ruta.put('/:email', (req, res) => {
     const {error, value} = schema.validate({nombre: req.body.nombre});
     if(!error){
-        let resultado = actualizaraUsuario(req.params.email, req.body);
+        let resultado = actualizarUsuario(req.params.email, req.body);
         resultado.then(valor => {
             res.json({
                 valor
