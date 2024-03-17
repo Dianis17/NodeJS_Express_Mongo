@@ -101,10 +101,25 @@ ruta.delete('/:email', (req, res) => {
     });
 });
 
+//Funcion asincrona para listar todos los ususarios activos
+async function listarUsuariosActivos(){
+    let usuarios = await Usuario.find({"estado": true});
+    return usuarios;
+}
 
-
-
-
+//Endpoint de tipo GET para el recurso usuarios. Lista todos los usuarios
+ruta.get('/',(req, res) => {
+    let resultado = listarUsuariosActivos();
+    resultado.then(usuarios => {
+        res.json(usuarios)
+    }).catch(err => {
+        res.status(400).json(
+            {
+                err
+            }
+        )
+    })
+});
 
 
 
