@@ -4,11 +4,11 @@ const ruta = express.Router();
 const Joi = require('@hapi/joi');
 
 
-ruta.get('/', (req, res)=>{
+ruta.get('/', (req,res)=>{
     res.json('Respuesta a peticion GET de USUARIOS funcionando correctamente...');
 });
 
-module.exports = ruta;
+
 
 // Funcion asincrona para crear un objeto de tipo usuario
 async function crearUsuario(body){
@@ -55,6 +55,7 @@ async function actualizaraUsuario(email, body){
     return usuario;
 }
 
+
 //Endpoint de tipo PUT para actualizar los datos del usuario
 ruta.put('/:email', (req, res) => {
     const {error, value} = schema.validate({nombre: req.body.nombre});
@@ -75,6 +76,37 @@ ruta.put('/:email', (req, res) => {
         })
     }
 });
+
+//Funcion asincrona para inactivar un usuario
+async function desactivarUsuario(email){
+    let usuario = await Usuario.findOneAndUpdate({"email": email}, {
+        $set: {
+            estado: false
+        }
+    }, {new: true});
+    return usuario;
+}
+
+//Endpoint de tipo DELETE para el recurso USUARIOS
+ruta.delete('/:email', (req, res) => {
+    let resultado = desactivarUsuario(req.params.email);
+    resultado.then(valor => {
+        res.json({
+            usuario: valor
+        })
+    }).catch(err => {
+        res.status(400).json({
+            err
+        })
+    });
+});
+
+
+
+
+
+
+
 
 
 
@@ -98,3 +130,5 @@ const schema = Joi.object({
 
 
 });
+
+module.exports = ruta;
