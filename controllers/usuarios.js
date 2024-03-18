@@ -4,10 +4,19 @@ const ruta = express.Router();
 const Joi = require('@hapi/joi');
 
 
-ruta.get('/', (req,res)=>{
-    res.json('Respuesta a peticion GET de USUARIOS funcionando correctamente...');
+//Endpoint de tipo GET para el recurso usuarios. Lista todos los usuarios
+ruta.get('/',(req, res) => {
+    let resultado = listarUsuariosActivos();
+    resultado.then(usuarios => {
+        res.json(usuarios)
+    }).catch(err => {
+        res.status(400).json(
+            {
+                err
+            }
+        )
+    })
 });
-
 
 
 // Funcion asincrona para crear un objeto de tipo usuario
@@ -106,27 +115,6 @@ async function listarUsuariosActivos(){
     let usuarios = await Usuario.find({"estado": true});
     return usuarios;
 }
-
-//Endpoint de tipo GET para el recurso usuarios. Lista todos los usuarios
-ruta.get('/',(req, res) => {
-    let resultado = listarUsuariosActivos();
-    resultado.then(usuarios => {
-        res.json(usuarios)
-    }).catch(err => {
-        res.status(400).json(
-            {
-                err
-            }
-        )
-    })
-});
-
-
-
-
-
-
-
 
 
 // Validaciones para el objeto usuario
