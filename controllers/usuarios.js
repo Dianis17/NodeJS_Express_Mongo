@@ -44,8 +44,8 @@ ruta.post('/', (req, res) => {
     }
 });
 
-// Endpoint PUT
-async function actualizaraUsuario(email, body){
+
+async function actualizarUsuario(email, body){
     let usuario = await Usuario.findOneAndUpdate({"email": email}, {
         $set: {
             nombre: body.nombre,
