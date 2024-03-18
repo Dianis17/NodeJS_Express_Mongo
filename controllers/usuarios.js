@@ -44,8 +44,8 @@ ruta.post('/', (req, res) => {
     }
 });
 
-// Endpoint PUT
-async function actualizaraUsuario(email, body){
+
+async function actualizarUsuario(email, body){
     let usuario = await Usuario.findOneAndUpdate({"email": email}, {
         $set: {
             nombre: body.nombre,
@@ -60,7 +60,7 @@ async function actualizaraUsuario(email, body){
 ruta.put('/:email', (req, res) => {
     const {error, value} = schema.validate({nombre: req.body.nombre});
     if(!error){
-        let resultado = actualizaraUsuario(req.params.email, req.body);
+        let resultado = actualizarUsuario(req.params.email, req.body);
         resultado.then(valor => {
             res.json({
                 valor

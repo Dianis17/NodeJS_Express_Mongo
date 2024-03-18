@@ -6,5 +6,38 @@ ruta.get('/', (req,res)=>{
     res.json('Respuesta a peticion GET de CURSOS funcionando correctamente... ');
 });
 
+//Funcion asincrona para crear cursos
+async function crearCurso(body){
+    let curso = new Curso({
+        titulo       : body.titulo,
+        descripcion  : body.descripcion,
+        alummnos : body.alummnos,
+        calificacion : body.calificacion
+    });
+    return await curso.save();
+}
+
+// Endpoint de tipo POST para el recurso CURSOS
+ruta.post('/', (req, res) => {
+    let resultado = crearCurso(req.body);
+
+    resultado.then(curso => {
+        res.json({
+            curso
+        })
+    }).catch(err => {
+        res.status(400).json({
+            err
+        })
+    })
+});
+
+
+
+
+
+
+
+
 
 module.exports = ruta;
