@@ -17,6 +17,17 @@ const schema = Joi.object({
 });
 
 
+async function actualizarUsuario(email, body){
+    let usuario = await Usuario.findOneAndUpdate({"email": email}, {
+        $set: {
+            nombre: body.nombre,
+            password: body.password
+        }
+    }, {new: true});
+    return usuario;
+}
+
+
 // Funcion asincrona para crear un objeto de tipo usuario
 async function crearUsuario(body){
     let usuario = new Usuario({
